@@ -1,10 +1,10 @@
 from models.base_model import BaseModel
 import peewee as pw
-from models.user import Users
-from models.thread import Threads
+from models.user import User
+from models.thread import Thread
 
 
-class Comments(BaseModel):
-    thread = pw.ForeignKeyField(Threads, backref="comments")
-    user = pw.ForeignKeyField(Threads, backref="comments")
+class Comment(BaseModel):
+    thread = pw.ForeignKeyField(Thread, backref="comments")
+    user = pw.ForeignKeyField(Thread, backref="comments")
     text = pw.TextField(null=True)
