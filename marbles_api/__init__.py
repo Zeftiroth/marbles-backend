@@ -17,3 +17,8 @@ app.register_blueprint(emergencies_api_blueprint,
 
 app.register_blueprint(threads_api_blueprint,
                        url_prefix='api/v1/threads')
+
+app.register_blueprint(comments_api_blueprint, url_prefix='api/v1/comments')
+
+
+app.register_blueprint(sessions_api_blueprint, url_prefix='api/v1/sessions')
