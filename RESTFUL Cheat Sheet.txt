@@ -1,0 +1,8 @@
+Purpose	View Function	HTTP Verb	Route
+load a form to create resource	new()	GET	/resources/new
+create resource	create()	POST	/resources/
+view all resources	index()	GET	/resources/
+view a particular resource	show()	GET	/resources/:id
+load form to edit a particular resource	edit()	GET	/resources/:id/edit
+edit a particular resource	update()	POST	/resources/:id
+delete a particular resource	destroy()	POST	/resources/:id/delete
