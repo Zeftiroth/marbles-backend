@@ -1,6 +1,8 @@
 from marbles_api.blueprints.users.views import users_api_blueprint
 from marbles_api.blueprints.emergencies.views import emergencies_api_blueprint
 from marbles_api.blueprints.threads.views import threads_api_blueprint
+from marbles_api.blueprints.comments.views import comments_api_blueprint
+from marbles_api.blueprints.sessions.views import sessions_api_blueprint
 
 from app import app
 from flask_cors import CORS

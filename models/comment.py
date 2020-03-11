@@ -6,5 +6,5 @@ from models.thread import Thread
 
 class Comment(BaseModel):
     thread = pw.ForeignKeyField(Thread, backref="comments")
-    user = pw.ForeignKeyField(Thread, backref="comments")
+    user = pw.ForeignKeyField(User, backref="comments")
     text = pw.TextField(null=True)
