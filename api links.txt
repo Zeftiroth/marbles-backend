@@ -1,0 +1,8 @@
+http://127.0.0.1:5000/api/v1/comments/new/1 POST new comments
+http://127.0.0.1:5000/api/v1/comments GET list comments
+http://127.0.0.1:5000/api/v1/sessions/login POST sign in
+http://127.0.0.1:5000/api/v1/comment_like/c_like/<id> POST add a like
+http://127.0.0.1:5000/api/v1/comment_like/<id> GET total of like for the comment with the associated id
+http://127.0.0.1:5000/api/v1/comments/<thread_id> GET get all comments associated with <thread_id>
+http://127.0.0.1:5000/api/v1/comments/new/<thread_id> POST new comment at the given <thread_id>
+http://127.0.0.1:5000/api/v1/comments/update/<thread_id> POST update comment made at <thread_id>
