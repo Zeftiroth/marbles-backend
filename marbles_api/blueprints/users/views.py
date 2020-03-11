@@ -107,11 +107,5 @@ def upload_profileimg():
 
 @users_api_blueprint.route('/<username>/upload', methods=['POST'])
 def upload_thread(username):
-<<<<<<< HEAD
-
-    # +++ UPLOAD THREAD CODE HERE +++
-    pass
-=======
     pass
     # +++ UPLOAD THREAD CODE HERE +++
->>>>>>> e9f626879c2bee80b845eff56156f9f6f22145f5

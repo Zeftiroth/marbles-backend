@@ -1,0 +1,2 @@
+http://127.0.0.1:5000/api/v1/comments/new/1 POST new comments
+http://127.0.0.1:5000/api/v1/comments GET list comments

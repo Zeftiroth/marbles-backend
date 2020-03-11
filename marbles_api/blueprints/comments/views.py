@@ -16,16 +16,10 @@ def index(thread_id):
 
     if comments:
         for comment in comments:
-            comment_data = {
-                'id': comment.id,
-                'text': comment.text,
-                'user': comment.user,
-                'thread': comment.thread,
-
-            }
-
+            comment_data = model_to_dict(comment)
+            del comment["thread"]
             result.append(comment_data)
-        return jsonify(result), 200
+        return jsonify({'user': result}), 200
 
     else:
         return jsonify({'message': 'id given does not match any thread_id'}), 400
@@ -35,8 +29,8 @@ def index(thread_id):
 def create(thread_id):
     comment = request.get_json()
 
-    comment_text = comment.text
-    comment_user = comment.user
+    comment_text = comment["text"]
+    comment_user = comment["user_id"]
 
     new_comment = Comment(
         text=comment_text, thread=thread_id, user=comment_user)
@@ -44,12 +38,12 @@ def create(thread_id):
         return jsonify({
             'message': 'new comment created!',
             'status': 'success',
-            'new_comment': {
-                'id': new_comment.id,
-                'user': new_comment.user,
-                'text': new_comment.text,
-                'thread': new_comment.thread,
-            },
+            # 'new_comment': {
+            #     'id': new_comment.id,
+            #     'user': new_comment.user,
+            #     'text': new_comment.text,
+            #     'thread': new_comment.thread,
+            # },
         }), 200
     else:
         return jsonify({'message': 'comment create failed'}), 400
