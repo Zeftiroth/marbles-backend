@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
-from models.user import User  # << Merge with the models for this to work
+# << Merge with the models for this to work
+from models.user import User
 from playhouse.shortcuts import model_to_dict
 
 users_api_blueprint = Blueprint('users_api',
@@ -96,6 +97,7 @@ def update(id):
 # ----- API NEED TO DO: 1) UPLOAD PROFILE IMAGE
 @users_api_blueprint.route('/upload', methods=['POST'])
 def upload_profileimg():
+    pass
 
     # +++ UPLOAD PROFILE IMAGE CODE HERE +++
 
@@ -105,6 +107,11 @@ def upload_profileimg():
 
 @users_api_blueprint.route('/<username>/upload', methods=['POST'])
 def upload_thread(username):
+<<<<<<< HEAD
 
     # +++ UPLOAD THREAD CODE HERE +++
     pass
+=======
+    pass
+    # +++ UPLOAD THREAD CODE HERE +++
+>>>>>>> e9f626879c2bee80b845eff56156f9f6f22145f5
