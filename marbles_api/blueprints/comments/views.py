@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify, request
-# << Merge with the models for this to work, rename User and user to appropriate Model
 from models.user import User
 from models.comment import Comment
 from playhouse.shortcuts import model_to_dict
@@ -16,10 +15,11 @@ def index(thread_id):
 
     if comments:
         for comment in comments:
-            comment_data = model_to_dict(comment)
-            del comment["thread"]
-            result.append(comment_data)
-        return jsonify({'user': result}), 200
+            comment = model_to_dict(comment)
+            del comment['thread']['user']
+            del comment['user']
+            result.append(comment)
+        return jsonify({"comments": result}), 200
 
     else:
         return jsonify({'message': 'id given does not match any thread_id'}), 400
@@ -30,7 +30,7 @@ def create(thread_id):
     comment = request.get_json()
 
     comment_text = comment["text"]
-    comment_user = comment["user_id"]
+    comment_user = comment["user"]
 
     new_comment = Comment(
         text=comment_text, thread=thread_id, user=comment_user)
@@ -47,3 +47,37 @@ def create(thread_id):
         }), 200
     else:
         return jsonify({'message': 'comment create failed'}), 400
+
+
+@comments_api_blueprint.route('/update/<id>', methods=['POST'])
+def update(id):
+
+    comment = Comment.get_by_id(id)
+
+    up_comment = request.get_json()
+
+    comment.text = up_comment['text']
+
+    if comment.save():
+        return jsonify({
+            'message': 'successfully updated comment',
+            'status': 'success',
+
+        }), 200
+    else:
+
+        return jsonify({"message": "update comment failed"}), 400
+
+
+@comments_api_blueprint.route('/del/<id>', methods=['POST'])
+def delete(id):
+
+    comment = Comment.get_by_id(id)
+
+    if comment.delete_instance(recursive=True):
+        return jsonify({
+            'message': "comment deleted"
+        }), 200
+    else:
+
+        return jsonify({'message': "delete comment failed"}), 400
