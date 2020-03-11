@@ -8,6 +8,8 @@ from marbles_api.blueprints.comments.views import comments_api_blueprint
 from marbles_api.blueprints.comments_likes.views import comment_likes_api_blueprint
 from marbles_api.blueprints.sessions.views import sessions_api_blueprint
 from flask_login import LoginManager
+from marbles_api.blueprints.thread_likes.views import thread_likes_api_blueprint
+
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 ## API Routes ##
@@ -31,3 +33,5 @@ app.register_blueprint(sessions_api_blueprint, url_prefix='/api/v1/sessions')
 
 app.register_blueprint(comment_likes_api_blueprint,
                        url_prefix='/api/v1/comment_like')
+app.register_blueprint(thread_likes_api_blueprint,
+                       url_prefix='/api/v1/thread_likes')
