@@ -6,3 +6,4 @@ http://127.0.0.1:5000/api/v1/comment_like/<id> GET total of like for the comment
 http://127.0.0.1:5000/api/v1/comments/<thread_id> GET get all comments associated with <thread_id>
 http://127.0.0.1:5000/api/v1/comments/new/<thread_id> POST new comment at the given <thread_id>
 http://127.0.0.1:5000/api/v1/comments/update/<thread_id> POST update comment made at <thread_id>
+http://127.0.0.1:5000/api/v1/threads/upload/<thread_id> POST upload img at <thread_id>

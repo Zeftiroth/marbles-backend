@@ -3,6 +3,16 @@ from flask import Blueprint, jsonify, request
 from models.user import User
 from models.thread import Thread
 from playhouse.shortcuts import model_to_dict
+import peeweedbevolve
+from werkzeug.security import generate_password_hash
+from werkzeug.utils import secure_filename
+from flask_login import current_user, login_required
+from marbles_api.utils.s3_uploader import upload_file_to_s3
+from operator import attrgetter
+from PIL import Image, ImageOps
+import tempfile
+import os
+
 
 threads_api_blueprint = Blueprint('threads_api',
                                   __name__,
@@ -112,3 +122,34 @@ def destroy(id):
         for error in thread.errors:
             er_msg.append(error)
         return jsonify({'message': er_msg}), 418
+
+
+@threads_api_blueprint.route("/upload/<thread_id>", methods=["POST"])
+def create(thread_id):
+    if not 'image' in request.files:
+
+        return jsonify({'msg': 'no image given'}), 400
+
+    file = request.files.get('image')
+
+    new_image = Image.open(file)
+
+    resized_image = ImageOps.fit(
+        new_image, (500, 500), method=3, bleed=0.0, centering=(0.5, 0.5))
+
+    temp_storage = f"./marbles_api/static/temp/{file.filename}"
+
+    resized_image.save(temp_storage)
+
+    file.filename = secure_filename(file.filename)
+
+    if not upload_file_to_s3(temp_storage, file):
+        return jsonify({'msg': 'upload to s3 failed'}), 400
+
+    thread = Thread.get_or_none(Thread.id == thread_id)
+    thread.template = file.filename
+    thread.save()
+
+    os.remove(temp_storage)
+
+    return jsonify({'msg': 'upload to s3 success'}), 200
