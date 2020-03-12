@@ -125,7 +125,7 @@ def destroy(id):
 
 
 @threads_api_blueprint.route("/upload/<thread_id>", methods=["POST"])
-def create(thread_id):
+def upload(thread_id):
     if not 'image' in request.files:
 
         return jsonify({'msg': 'no image given'}), 400
