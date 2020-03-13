@@ -34,7 +34,7 @@ def index():
 # ------ API THAT SELECTS A THREAD BY ID -----------
 @threads_api_blueprint.route('/<id>', methods=['GET'])
 def show(id):
-    thread = Thread.get_or_none(User.id == id)
+    thread = Thread.get_or_none(Thread.id == id)
 
     if thread:
         return jsonify({
@@ -126,30 +126,22 @@ def destroy(id):
 
 @threads_api_blueprint.route("/upload/<thread_id>", methods=["POST"])
 def upload(thread_id):
-    if not 'image' in request.files:
+    # if not 'image' in request.files:
 
-        return jsonify({'msg': 'no image given'}), 400
+    #     return jsonify({'msg': 'no image given'}), 400
 
     file = request.files.get('image')
 
-    new_image = Image.open(file)
-
-    resized_image = ImageOps.fit(
-        new_image, (500, 500), method=3, bleed=0.0, centering=(0.5, 0.5))
-
-    temp_storage = f"./marbles_api/static/temp/{file.filename}"
-
-    resized_image.save(temp_storage)
-
     file.filename = secure_filename(file.filename)
 
-    if not upload_file_to_s3(temp_storage, file):
+    if not upload_file_to_s3(file):
         return jsonify({'msg': 'upload to s3 failed'}), 400
 
+    breakpoint()
     thread = Thread.get_or_none(Thread.id == thread_id)
     thread.template = file.filename
     thread.save()
 
-    os.remove(temp_storage)
+    # os.remove(temp_storage)
 
     return jsonify({'msg': 'upload to s3 success'}), 200
