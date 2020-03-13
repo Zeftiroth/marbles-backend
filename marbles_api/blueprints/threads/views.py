@@ -137,8 +137,8 @@ def upload(thread_id):
     if not upload_file_to_s3(file):
         return jsonify({'msg': 'upload to s3 failed'}), 400
 
-    breakpoint()
     thread = Thread.get_or_none(Thread.id == thread_id)
+
     thread.template = file.filename
     thread.save()
 
