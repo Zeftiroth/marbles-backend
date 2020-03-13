@@ -142,6 +142,7 @@ def upload(thread_id):
     resized_image.save(temp_storage)
 
     file.filename = secure_filename(file.filename)
+    breakpoint()
 
     if not upload_file_to_s3(temp_storage, file):
         return jsonify({'msg': 'upload to s3 failed'}), 400
