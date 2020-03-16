@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 from flask_login import current_user, login_required
 from marbles_api.utils.s3_uploader import upload_file_to_s3
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from operator import attrgetter
 from PIL import Image, ImageOps
 import tempfile
@@ -47,28 +48,30 @@ def show(id):
 
 # ---------- API THAT CREATES A NEW THREAD, RETURNS A new_thread OBJECT BACK ---------
 @threads_api_blueprint.route('/', methods=['POST'])
-# @jwt_required
+@jwt_required
 def create():
 
-    # in future can use get_jwt_identity as a current_user
-    # user_id = get_jwt_identity() < can use this to assign the user_id
+    # use @jwt_required and get_jwt_identity() to get the id of the current user. can use it to assign as an id value
 
-    # Need to get the ID of the user creating the new thread.
+    user_id = get_jwt_identity()
+    file = request.files.get('image')
+    file.filename = secure_filename(file.filename)
 
-    user_id = request.json.get('user')
-    template = request.json.get('template')
-    content = request.json.get('content')
+    content = request.form.get('caption')
 
-    if not user_id or not template or not content:
+    if not user_id or not file or not content:
         response = {
             'message': 'All field were not provided'
         }
-
         return jsonify(response), 400
+
+    if not upload_file_to_s3(file):
+        return jsonify({'msg': 'upload to s3 failed'}), 400
+
     post_thread = request.get_json()
 
     post_thread = Thread(user_id=user_id,
-                         template=template, content=content)
+                         template=file.filename, content=content)
 
     post_thread.save()
 
@@ -79,6 +82,7 @@ def create():
         'content': post_thread.content
 
     }), 200
+
 
 # ---------API FOR USER TO EDIT THREAD -----------
 @threads_api_blueprint.route('/<id>', methods=['POST'])
@@ -139,6 +143,7 @@ def upload(thread_id):
 
     thread = Thread.get_or_none(Thread.id == thread_id)
     thread.template = file.filename
+    # thread = Thread(template=file.filname)
     thread.save()
 
     # os.remove(temp_storage)

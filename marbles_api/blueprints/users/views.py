@@ -2,10 +2,40 @@ from flask import Blueprint, jsonify, request
 # << Merge with the models for this to work
 from models.user import User
 from playhouse.shortcuts import model_to_dict
-
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 users_api_blueprint = Blueprint('users_api',
                                 __name__,
                                 template_folder='templates')
+
+
+# ----------- API TO LOGIN -----------
+@users_api_blueprint.route('/login', methods=['POST'])
+def login():
+    email = request.json.get('email')
+    # does nothing for now. implment hashing later
+    password = request.json.get('password')
+    user = User.get_or_none(User.email == email)
+
+    if user:
+        access_token = create_access_token(
+            identity=user.id, expires_delta=False)
+        responseObj = {
+            'status': 'success',
+            'message': 'Login successfully!',
+            'access_token': access_token,
+            'user': {"id": int(user.id), "name": user.name, "email": user.email}
+        }
+        return jsonify(responseObj), 200
+
+    else:
+        responseObj = {
+            'status': 'failed',
+            'message': 'Login went awry'
+        }
+        return jsonify(responseObj), 400
 
 
 # --- API THAT RETURNS ALL USERS ----
@@ -68,7 +98,7 @@ def create():
 # ---- API FOR UPDATING USER DETAILS--------
 @users_api_blueprint.route('/<id>', methods=['POST'])
 def update(id):
-    user = User.get_by_id(id)
+    user = User.get_or_none(User.id == id)
 
     update = request.get_json()
 
