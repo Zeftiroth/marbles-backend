@@ -1,4 +1,5 @@
 from app import app
+from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
 from marbles_api.blueprints.users.views import users_api_blueprint
@@ -17,6 +18,8 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+app.config['JWT_SECRET_KEY'] = 'super-secret'
+jwt = JWTManager(app)
 
 app.register_blueprint(users_api_blueprint, url_prefix='/api/v1/users')
 
