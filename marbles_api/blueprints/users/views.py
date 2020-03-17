@@ -70,8 +70,6 @@ def show(id):
 @users_api_blueprint.route('/', methods=['POST'])
 def create():
     user = request.get_json()
-    access_token = create_access_token(
-        identity=user.id, expires_delta=False)
 
     new_user = User(
         name=user['name'],
@@ -81,6 +79,8 @@ def create():
     )
 
     if new_user.save():
+        access_token = create_access_token(
+            identity=new_user.id, expires_delta=False)
         return jsonify({
             'access_token': access_token,
             'message': 'new user created!',
