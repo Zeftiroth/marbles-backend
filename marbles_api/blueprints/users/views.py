@@ -75,7 +75,8 @@ def create():
     new_user = User(
         name=user['name'],
         password=user['password'],
-        email=user['email']
+        email=user['email'],
+        gender=user['gender']
     )
 
     if new_user.save():
