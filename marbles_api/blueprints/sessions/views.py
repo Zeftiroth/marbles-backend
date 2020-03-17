@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request
 from models.user import User
 from werkzeug.security import check_password_hash
-from flask_login import login_user, logout_user
 
 
 sessions_api_blueprint = Blueprint('sessions_api',
@@ -17,7 +16,7 @@ def login():
     if user != None:
         result = User.get_or_none(User.password == login['password'])
         if result:
-            login_user(user)
+
             return jsonify({'message': 'logged in successful'}), 200
         else:
             return jsonify({
@@ -28,8 +27,8 @@ def login():
         return jsonify({'message': 'incorrect username and password'}), 400
 
 
-@sessions_api_blueprint.route('/logout')
-def logout():
-    logout_user()
-    print('message : logout succesful')
-    return jsonify({'msg': 'logout successful'}), 200
+# @sessions_api_blueprint.route('/logout')
+# def logout():
+#     logout_user()
+#     print('message : logout succesful')
+#     return jsonify({'msg': 'logout successful'}), 200

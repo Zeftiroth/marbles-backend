@@ -6,7 +6,7 @@ from playhouse.shortcuts import model_to_dict
 import peeweedbevolve
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
-from flask_login import current_user, login_required
+
 from marbles_api.utils.s3_uploader import upload_file_to_s3
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from operator import attrgetter
