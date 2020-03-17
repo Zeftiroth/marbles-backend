@@ -51,6 +51,7 @@ def index():
 # ------ API THAT SELECTS A USER BY ID -----------
 @users_api_blueprint.route('/<id>', methods=['GET'])
 def show(id):
+
     user = User.get_or_none(User.id == id)
 
     if user:
@@ -69,6 +70,7 @@ def show(id):
 # ------ API TO CREATE A USER, RETURNS A new_user OBJECT BACK -------------
 @users_api_blueprint.route('/', methods=['POST'])
 def create():
+
     user = request.get_json()
 
     new_user = User(
