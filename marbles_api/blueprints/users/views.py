@@ -3,8 +3,8 @@ from flask import Blueprint, jsonify, request
 from models.user import User
 from playhouse.shortcuts import model_to_dict
 from flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity
+    create_access_token,
+
 )
 users_api_blueprint = Blueprint('users_api',
                                 __name__,
