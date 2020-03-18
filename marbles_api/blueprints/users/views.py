@@ -51,6 +51,7 @@ def index():
 # ------ API THAT SELECTS A USER BY ID -----------
 @users_api_blueprint.route('/<id>', methods=['GET'])
 def show(id):
+
     user = User.get_or_none(User.id == id)
 
     if user:
@@ -80,7 +81,10 @@ def create():
     )
 
     if new_user.save():
+        access_token = create_access_token(
+            identity=new_user.id, expires_delta=False)
         return jsonify({
+            'access_token': access_token,
             'message': 'new user created!',
             'status': 'success',
             'new_user': {
