@@ -132,7 +132,7 @@ def update(id):
 # +++++ ON HOLD FOR NOW. ASK MATT WHEN TEAM COMES TO THAT POINT. SAME FOR THREADS/POSTS AS WELL SINCE IT NEEDS TO BE UPLOADED TO S3 ++++----
 
 # ----- API NEED TO DO: 1) UPLOAD PROFILE IMAGE
-@users_api_blueprint.route('/upload', methods=['POST'])
+@users_api_blueprint.route('/profilepics', methods=['POST'])
 @jwt_required
 def upload_profileimg():
     user_id = get_jwt_identity()
@@ -160,7 +160,7 @@ def upload_profileimg():
     }), 200
 
 # -----GET API to retrieve profile pic by id ----
-@users_api_blueprint.route('/profilepic/<id>', methods=['GET'])
+@users_api_blueprint.route('/profilepics/<id>', methods=['GET'])
 @jwt_required
 def show_profilepic(id):
 
