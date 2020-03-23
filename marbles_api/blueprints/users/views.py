@@ -3,9 +3,11 @@ from flask import Blueprint, jsonify, request
 from models.user import User
 from playhouse.shortcuts import model_to_dict
 from flask_jwt_extended import (
-    create_access_token,
-
+    create_access_token, jwt_required, get_jwt_identity
 )
+from werkzeug.utils import secure_filename
+from marbles_api.utils.s3_uploader import upload_file_to_s3
+
 users_api_blueprint = Blueprint('users_api',
                                 __name__,
                                 template_folder='templates')
@@ -130,14 +132,53 @@ def update(id):
 # +++++ ON HOLD FOR NOW. ASK MATT WHEN TEAM COMES TO THAT POINT. SAME FOR THREADS/POSTS AS WELL SINCE IT NEEDS TO BE UPLOADED TO S3 ++++----
 
 # ----- API NEED TO DO: 1) UPLOAD PROFILE IMAGE
-@users_api_blueprint.route('/upload', methods=['POST'])
+@users_api_blueprint.route('/profilepics', methods=['POST'])
+@jwt_required
 def upload_profileimg():
-    pass
+    user_id = get_jwt_identity()
+    file = request.files.get('image')
+    file.filename = secure_filename(file.filename)
 
-    # +++ UPLOAD PROFILE IMAGE CODE HERE +++
+    if not user_id or not file:
+        response = {
+            'message': 'All field were not provided'
+        }
+        return jsonify(response), 400
 
-    # 2) UPLOAD THREAD/POST
-    pass
+    if not upload_file_to_s3(file):
+        return jsonify({'msg': 'upload to s3 failed'}), 400
+
+    post_profile = User.get_by_id(user_id)
+
+    post_profile.profile_picture = file.filename
+
+    post_profile.save()
+
+    return jsonify({
+        'message': 'profile picture updated',
+        'profile_picture': post_profile.profile_picture
+    }), 200
+
+# -----GET API to retrieve profile pic by id ----
+@users_api_blueprint.route('/profilepics/<id>', methods=['GET'])
+@jwt_required
+def show_profilepic(id):
+
+    # -- If you decide to not include <id> in the route, replace line 171 with the following to target the user id. Include @jwt_required and line 19,20&36 in profile.js for this to work
+    # user_id = get_jwt_identity()
+    # user = User.get_or_none(User.id == int(user_id))
+
+    user = User.get_or_none(User.id == id)
+
+    if user:
+        return jsonify({
+            'id': user.id,
+            'name': user.name,
+            'profile_picture': user.profile_picture,
+            # image in static/images, but no idea how to link this.
+        }), 200
+    else:
+        return jsonify({'message': 'user not found'}), 418
 
 
 @users_api_blueprint.route('/<username>/upload', methods=['POST'])
