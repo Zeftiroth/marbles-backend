@@ -41,7 +41,7 @@ def create(thread_id):
             'data' : {
                         'user': new_comment.user,
                         'text': new_comment.text,
-                        # 'thread': new_comment.thread,
+                        'thread': new_comment.thread.id,
             }
             
         }), 200
