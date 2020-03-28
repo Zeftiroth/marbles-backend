@@ -35,6 +35,7 @@ def create(thread_id):
     new_comment = Comment(
         text=comment_text, thread=thread_id, user=comment_user)
     if new_comment.save():
+        
         return jsonify({
             'message': 'new comment created!',
             'status': 'success',
@@ -42,6 +43,9 @@ def create(thread_id):
                         'user': new_comment.user.id,
                         'text': new_comment.text,
                         'thread': new_comment.thread.id,
+                        'created_at': new_comment.created_at,
+                        'updated_at': new_comment.updated_at,
+                        
             }
             
         }), 200
