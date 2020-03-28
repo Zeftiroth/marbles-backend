@@ -39,7 +39,7 @@ def create(thread_id):
             'message': 'new comment created!',
             'status': 'success',
             'data' : {
-                        'user': new_comment.user,
+                        'user': new_comment.user.id,
                         'text': new_comment.text,
                         'thread': new_comment.thread.id,
             }
