@@ -39,9 +39,9 @@ def create(thread_id):
             'message': 'new comment created!',
             'status': 'success',
             'data' : {
-            'user': new_comment.user,
-            'text': new_comment.text,
-            'thread': new_comment.thread,
+                        'user': new_comment.user,
+                        'text': new_comment.text,
+                        # 'thread': new_comment.thread,
             }
             
         }), 200
