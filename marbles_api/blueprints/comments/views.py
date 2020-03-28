@@ -38,10 +38,11 @@ def create(thread_id):
         return jsonify({
             'message': 'new comment created!',
             'status': 'success',
-            
+            'data' : {
             'user': new_comment.user,
             'text': new_comment.text,
             'thread': new_comment.thread,
+            }
             
         }), 200
     else:
