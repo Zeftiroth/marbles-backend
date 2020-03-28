@@ -16,8 +16,8 @@ def index(thread_id):
     if comments:
         for comment in comments:
             comment = model_to_dict(comment)
-            del comment['thread']['user']
-            del comment['user']
+            # del comment['thread']['user']
+            # del comment['user']
             result.append(comment)
         return jsonify({"comments": result}), 200
 
