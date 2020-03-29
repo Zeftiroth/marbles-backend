@@ -26,7 +26,8 @@ def create(id):
 
         if existing_like:
             return jsonify({
-                'message': "You've already liked this thread"
+                'success': False,
+                'message': "You've already liked this comment"
             })
 
         new_comment_like = CommentLike(user=user_id,
@@ -35,6 +36,7 @@ def create(id):
         new_comment_like.save()
 
         return jsonify({
+            'success': True,
             'message': "Comment liked successfully",
 
         }), 200

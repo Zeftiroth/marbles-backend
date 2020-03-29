@@ -16,8 +16,8 @@ def index(thread_id):
     if comments:
         for comment in comments:
             comment = model_to_dict(comment)
-            del comment['thread']['user']
-            del comment['user']
+            # del comment['thread']['user']
+            # del comment['user']
             result.append(comment)
         return jsonify({"comments": result}), 200
 
@@ -35,14 +35,19 @@ def create(thread_id):
     new_comment = Comment(
         text=comment_text, thread=thread_id, user=comment_user)
     if new_comment.save():
+        # xtra_info = Comment.get_by_id(Comment.id == new_comment.id)
         return jsonify({
             'message': 'new comment created!',
             'status': 'success',
-            
-                'id': new_comment.id,
-                'user': new_comment.user,
-                'text': new_comment.text,
-                'thread': new_comment.thread,
+            'data' : {
+                        'user': new_comment.user.id,
+                        'text': new_comment.text,
+                        'thread': new_comment.thread.id,
+                        'created_at': new_comment.created_at,
+                        'updated_at': new_comment.updated_at,
+                        # 'info' : xtra_info,
+                        
+            }
             
         }), 200
     else:
