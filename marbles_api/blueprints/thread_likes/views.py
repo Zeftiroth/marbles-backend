@@ -50,4 +50,4 @@ def show(id):
         t_like = model_to_dict(t_like)
         del t_like['thread']['user']
         tl_data.append(t_like)
-    return jsonify(tl_data), 200
+    return jsonify({"msg": tl_data}), 200
