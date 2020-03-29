@@ -35,7 +35,7 @@ def create(thread_id):
     new_comment = Comment(
         text=comment_text, thread=thread_id, user=comment_user)
     if new_comment.save():
-        xtra_info = Comment.get_by_id(Comment.id == new_comment.id)
+        # xtra_info = Comment.get_by_id(Comment.id == new_comment.id)
         return jsonify({
             'message': 'new comment created!',
             'status': 'success',
@@ -45,7 +45,7 @@ def create(thread_id):
                         'thread': new_comment.thread.id,
                         'created_at': new_comment.created_at,
                         'updated_at': new_comment.updated_at,
-                        'info' : xtra_info,
+                        # 'info' : xtra_info,
                         
             }
             
