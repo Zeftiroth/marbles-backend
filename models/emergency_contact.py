@@ -8,3 +8,4 @@ class EmergencyContact(BaseModel):
     name = pw.CharField(null=True)
     contact_no = pw.CharField(null=True)
     email = pw.CharField(null=True)
+    relation = pw.CharField(null=True)
