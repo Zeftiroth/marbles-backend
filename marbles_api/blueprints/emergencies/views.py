@@ -12,7 +12,7 @@ emergencies_api_blueprint = Blueprint('emergencies_api',
 # ------ API THAT CREATES NEW EMERGENCY CONTACT -------
 
 @emergencies_api_blueprint.route('/new/<id>', methods=['POST'])
-def create():
+def create(id):
 
     user_id = request.json.get('user')
     name = request.json.get('name')
