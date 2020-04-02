@@ -18,11 +18,12 @@ def create():
     name = request.json.get('name')
     contact_no = request.json.get('contact_no')
     email = request.json.get('email')
+    relation = request.json.get('relation')
 
     # post_thread = request.get_json()
 
     new_contact = EmergencyContact(user_id=user_id,
-                                   name=name, contact_no=contact_no, email=email)
+                                   name=name, contact_no=contact_no, email=email, relation=relation)
 
     new_contact.save()
 
@@ -31,7 +32,8 @@ def create():
         'user': new_contact.user.name,
         'name': new_contact.name,
         'contact_no': new_contact.contact_no,
-        'email': new_contact.email
+        'email': new_contact.email,
+        'relation' : new_contact.relation
     }), 200
 
 # ----- API TO DISPLAY ALL EMERGENCY CONTACTS ASSPCOATED WITH AN ID -----
