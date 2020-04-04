@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify, request
 from models.user import User
 from models.emergency_contact import EmergencyContact
 from playhouse.shortcuts import model_to_dict
+from marbles_api.utils.mailgun import send_simple_message
 
 emergencies_api_blueprint = Blueprint('emergencies_api',
                                       __name__,
@@ -48,3 +49,15 @@ def show(id):
         del econtact['user']
         ec_data.append(econtact)
     return jsonify(ec_data), 200
+
+
+@emergencies_api_blueprint.route('/panic/<id>', methods=["POST"])
+def send(id):
+    cUser = User.get_or_none(User.id == id).name
+    eCont = EmergencyContact.get_or_none(EmergencyContact.id == id)
+    eConName = eCont.name
+    eConEmail = eCont.email
+    eConRelation = eCont.relation
+    send_simple_message(
+        cUser = cUser, eConName = eConName, eConEmail = eConEmail, eConRelation = eConRelation)
+        

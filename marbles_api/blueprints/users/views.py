@@ -61,8 +61,10 @@ def show(id):
             'id': user.id,
             'name': user.name,
             'email': user.email,
-            'profile_image': user.profile_image,
-            'private': user.private
+            'anonymous': user.anonymous,
+            # 'profile_picture' : user.profile_picture,
+            
+            
 
             # image in static/images, but no idea how to link this.
         }), 200
@@ -112,6 +114,7 @@ def update(id):
     user.name = update['name']
     user.email = update['email']
     user.gender = update['gender']
+    user.password = update['password']
 
     if user.save():
         return jsonify({
@@ -121,6 +124,7 @@ def update(id):
                 'id': user.id,
                 'name': user.name,
                 'email': user.email,
+                'password': user.password,
             },
         }), 200
     else:
