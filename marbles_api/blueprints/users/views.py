@@ -112,6 +112,7 @@ def update(id):
     user.name = update['name']
     user.email = update['email']
     user.gender = update['gender']
+    user.password = update['password']
 
     if user.save():
         return jsonify({
@@ -121,6 +122,7 @@ def update(id):
                 'id': user.id,
                 'name': user.name,
                 'email': user.email,
+                'password': user.password,
             },
         }), 200
     else:
