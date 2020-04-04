@@ -61,8 +61,10 @@ def show(id):
             'id': user.id,
             'name': user.name,
             'email': user.email,
+            'anonymous': user.anonymous,
+            # 'profile_picture' : user.profile_picture,
             
-            'private': user.private
+            
 
             # image in static/images, but no idea how to link this.
         }), 200
