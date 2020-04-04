@@ -34,7 +34,7 @@ def create(id):
         'name': new_contact.name,
         'contact_no': new_contact.contact_no,
         'email': new_contact.email,
-        'relation' : new_contact.relation
+        'relation': new_contact.relation
     }), 200
 
 # ----- API TO DISPLAY ALL EMERGENCY CONTACTS ASSPCOATED WITH AN ID -----
@@ -54,10 +54,19 @@ def show(id):
 @emergencies_api_blueprint.route('/panic/<id>', methods=["POST"])
 def send(id):
     cUser = User.get_or_none(User.id == id).name
-    eCont = EmergencyContact.get_or_none(EmergencyContact.id == id)
+    eCont = EmergencyContact.get(EmergencyContact.user_id == id)
+
     eConName = eCont.name
     eConEmail = eCont.email
     eConRelation = eCont.relation
+
     send_simple_message(
-        cUser = cUser, eConName = eConName, eConEmail = eConEmail, eConRelation = eConRelation)
-        
+        cUser=cUser, eConName=eConName, eConEmail=eConEmail, eConRelation=eConRelation)
+
+    return jsonify({
+        'message': f'Sent to {eConName} at {eConEmail}',
+        'user': cUser,
+        'name': eConName,
+        'email': eConEmail,
+        'relation': eConRelation
+    }), 200
