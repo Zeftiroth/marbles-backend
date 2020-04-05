@@ -10,6 +10,8 @@ class Config(object):
     AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
     AWS_SECRET_KEY = os.getenv('AWS_SECRET_KEY')
     AWS_BUCKET_NAME = os.getenv('AWS_BUCKET_NAME')
+    ACCOUNT_SID = os.getenv('ACCOUNT_SID')
+    AUTH_TOKEN = os.getenv('AUTH_TOKEN')
 
 
 class ProductionConfig(Config):
