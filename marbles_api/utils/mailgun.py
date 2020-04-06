@@ -2,6 +2,16 @@ import os
 import requests
 
 
+<<<<<<< HEAD
+def send_simple_message(cUser, eConName, eConEmail, eConRelation):
+
+    return requests.post("https://api.mailgun.net/v3/sandboxa290eb457da745fdad8b11f801694050.mailgun.org/   messages", auth=("api", os.getenv("MAILGUN_API_KEY")),
+                         data={"from": "Marbles App <mailgun@sandboxa290eb457da745fdad8b11f801694050.mailgun.org >",
+                               "to": [eConEmail],
+                               "subject": f"{cUser} has pressed the panic button!",
+                               "text": f"{eConName}, {cUser}'s {eConRelation}. {cUser} has pressed the panic button. Pls go to {cUser} now to make sure he/she is okay. Sincerely, Marbles Team"}
+                         )
+=======
 # def send_simple_message(cUser, eConName, eConEmail, eConRelation):
 
 #     return requests.post("https://api.mailgun.net/v3/sandboxa290eb457da745fdad8b11f801694050.mailgun.org/   messages", auth=("api", "key-a2e59f19d680870987eef72e0a6e2ec3"),
@@ -21,3 +31,4 @@ def send_simple_message(cUser, eConName, eConEmail, eConRelation
               "to": [f"{eConEmail}"],
               "subject": f"{cUser} has pressed the panic button",
               "text": f"{eConName}, {cUser}'s {eConRelation}. {cUser} has pressed the panic button. Pls go to {cUser} now to make sure he/she is okay. Sincerely, Marbles Team"})
+>>>>>>> aee84e31e39a1cd85f2667fd17e649f00c78e5b5
