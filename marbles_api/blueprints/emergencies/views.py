@@ -68,12 +68,9 @@ def send(id):
         eConNum = contact.contact_no
         send_sms(
             cUser=cUser, eConName=eConName, eConNum=eConNum)
-
-    # send_simple_message(
-    #     cUser=cUser, eConName=eConName, eConEmail=eConEmail, eConRelation=eConRelation)
-
-    # send_sms(
-    #     cUser=cUser, eConName=eConName, eConNum=eConNum)
+        send_simple_message(
+            cUser=cUser, eConName=eConName, eConEmail=eConEmail, eConRelation=eConRelation
+        )
 
     return jsonify({
         'message': f'Sent to {eConName} at {eConEmail}',
