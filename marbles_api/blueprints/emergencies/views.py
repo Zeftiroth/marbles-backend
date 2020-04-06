@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify, request
 from models.user import User
 from models.emergency_contact import EmergencyContact
 from playhouse.shortcuts import model_to_dict
+from marbles_api.utils.twiliosms import send_sms
 from marbles_api.utils.mailgun import send_simple_message
 
 emergencies_api_blueprint = Blueprint('emergencies_api',
@@ -53,22 +54,38 @@ def show(id):
 
 @emergencies_api_blueprint.route('/panic/<id>', methods=["POST"])
 def send(id):
+
+    # cUser = User.get_or_none(User.id == id).name
+    # eCont = EmergencyContact.get(EmergencyContact.user_id == id)
+
+    # eConName = eCont.name
+    # eConEmail = eCont.email
+    # eConRelation = eCont.relation
+    # eConNum = eCont.contact_no
+
+    # send_simple_message(
+
+    #     cUser=cUser, eConName=eConName, eConEmail=eConEmail, eConRelation=eConRelation
+    # )
+    # send_sms(
+    #     cUser=cUser, eConName=eConName, eConNum=eConNum, eConRelation=eConRelation)
+
+    # ----Code to send to multiple users-----
+    # --IMPORTANT , recipient emails and phone numbers need to be verified first in mailgun and twillio respectively due to trial account restrictions. So far, only Hazwan and Hui Sen are verified for both
     cUser = User.get_or_none(User.id == id).name
-    eCont = EmergencyContact.get(EmergencyContact.user_id == id)
+    contacts = EmergencyContact.select().where(EmergencyContact.user_id == id)
 
-    eConName = eCont.name
-    eConEmail = eCont.email
-    eConRelation = eCont.relation
-
-    send_simple_message(
-
-        cUser=cUser, eConName=eConName, eConEmail=eConEmail, eConRelation=eConRelation
-    )
+    for contact in contacts:
+        eConName = contact.name
+        eConEmail = contact.email
+        eConRelation = contact.relation
+        eConNum = contact.contact_no
+        send_simple_message(
+            cUser=cUser, eConName=eConName, eConEmail=eConEmail, eConRelation=eConRelation
+        )
+        send_sms(
+            cUser=cUser, eConName=eConName, eConNum=eConNum, eConRelation=eConRelation)
 
     return jsonify({
-        'message': f'Sent to {eConName} at {eConEmail}',
-        'user': cUser,
-        'name': eConName,
-        'email': eConEmail,
-        'relation': eConRelation
+        'message': 'Message sent'
     }), 200
