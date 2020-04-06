@@ -61,7 +61,9 @@ def send(id):
     eConRelation = eCont.relation
 
     send_simple_message(
-        cUser=cUser, eConName=eConName, eConEmail=eConEmail, eConRelation=eConRelation)
+
+        cUser=cUser, eConName=eConName, eConEmail=eConEmail, eConRelation=eConRelation
+    )
 
     return jsonify({
         'message': f'Sent to {eConName} at {eConEmail}',
