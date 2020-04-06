@@ -4,7 +4,7 @@ import requests
 from config import Config
 
 
-def send_sms(cUser, eConName, eConNum):
+def send_sms(cUser, eConName, eConNum,  eConRelation):
 
     account_sid = Config.ACCOUNT_SID
     auth_token = Config.AUTH_TOKEN
@@ -13,7 +13,7 @@ def send_sms(cUser, eConName, eConNum):
     message = client.messages \
         .create(
             body=[
-                f"This is the Marbles App. User {cUser} is in need of your help! Please check on them quickly"],
+                f"{eConName}, {cUser}'s {eConRelation}. {cUser} has pressed the panic button. Pls go to {cUser} now to make sure he/she is okay. Sincerely, Marbles Team"],
             from_="+19132465603",
             to={eConNum}
         )
