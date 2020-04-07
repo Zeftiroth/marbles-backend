@@ -94,7 +94,9 @@ def create():
             'new_user': {
                 'id': new_user.id,
                 'name': new_user.name,
-                'email': new_user.email
+                'email': new_user.email,
+                'gender': new_user.gender,
+                'password': new_user.password,
             },
         }), 200
     else:
