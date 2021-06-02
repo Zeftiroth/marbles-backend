@@ -46,7 +46,7 @@ six==1.12.0
 twilio==6.38.0
 typed-ast==1.4.1
 unicorn==1.0.1
-urllib3==1.25.8
+urllib3==1.26.5
 webassets==0.12.1
 Werkzeug==0.15.3
 wincertstore==0.2
